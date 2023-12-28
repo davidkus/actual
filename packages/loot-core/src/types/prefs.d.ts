@@ -53,6 +53,7 @@ export type LocalPrefs = Partial<
     reportsViewLegend: boolean;
     reportsViewSummary: boolean;
     reportsViewLabel: boolean;
+    defaultFilterId: string;
   } & Record<`flags.${FeatureFlag}`, boolean>
 >;
 

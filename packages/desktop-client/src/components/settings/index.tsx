@@ -21,6 +21,7 @@ import { FormField, FormLabel } from '../forms';
 import { Page } from '../Page';
 import { useServerVersion } from '../ServerContext';
 
+import DefaultFilter from './DefaultFilter';
 import EncryptionSettings from './Encryption';
 import ExperimentalFeatures from './Experimental';
 import ExportBudget from './Export';
@@ -168,6 +169,7 @@ export default function Settings() {
 
         <ThemeSettings />
         <FormatSettings />
+        <DefaultFilter />
         <EncryptionSettings />
         <ExportBudget />
 

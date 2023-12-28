@@ -301,9 +301,19 @@ class AccountInternal extends PureComponent {
       }, 100);
     }
 
+    // When the component first mounts, filters will not yet be known (loaded async)
+    // Apply the default filter once it is known, and only once.
+    if (prevProps.defaultFilter == null && this.props.defaultFilter) {
+      this.onApplyFilter(this.props.defaultFilter);
+    }
+
     //Resest sort/filter/search on account change
     if (this.props.accountId !== prevProps.accountId) {
       this.setState({ sort: [], search: '', filters: [] });
+      // Apply the default filter on account change
+      if (this.props.defaultFilter) {
+        this.onApplyFilter(this.props.defaultFilter);
+      }
     }
   }
 
@@ -1494,6 +1504,7 @@ export default function Account() {
     modalShowing: state.modals.modalStack.length > 0,
     accountsSyncing: state.account.accountsSyncing,
     lastUndoState: state.app.lastUndoState,
+    defaultFilterId: state.prefs.local.defaultFilterId,
   }));
 
   const dispatch = useDispatch();
@@ -1528,6 +1539,10 @@ export default function Account() {
     };
   }, [params.id]);
 
+  const defaultFilter = filtersList.find(
+    filter => filter.id === state.defaultFilterId,
+  );
+
   return (
     <SchedulesProvider transform={transform}>
       <SplitsExpandedProvider
@@ -1542,6 +1557,7 @@ export default function Account() {
           categoryId={location?.state?.filter?.category}
           location={location}
           filtersList={filtersList}
+          defaultFilter={defaultFilter}
         />
       </SplitsExpandedProvider>
     </SchedulesProvider>
